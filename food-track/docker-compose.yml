@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  food_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: food-track
+    restart: unless-stopped
+    networks:
+      - mon-network
+    depends_on:
+      - food_db
+  food_db:
+    image: postgres
+    container_name: food_pgdb
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user-name
+      POSTGRES_PASSWORD: strong-password
+      POSTGRES_DB: food_db
+    networks:
+      - mon-network
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+ 
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
+
+networks:
+  mon-network:
+    driver: bridge
+    external: true

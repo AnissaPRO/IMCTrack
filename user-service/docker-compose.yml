@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+  user_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: user-service
+    restart: unless-stopped
+    networks:
+      - mon-network
+    depends_on:
+      - user_db
+  user_db:
+    image: postgres
+    container_name: user_pgdb
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user-name
+      POSTGRES_PASSWORD: strong-password
+      POSTGRES_DB: user_db
+    networks:
+      - mon-network
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+  user_pgadmin:
+    image: dpage/pgadmin4
+    container_name: user-pgadmin4
+    restart: unless-stopped
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+      PGADMIN_DEFAULT_PASSWORD: strong-password
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - mon-network
+    depends_on:
+      - user_db
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
+
+networks:
+  mon-network:
+    driver: bridge
+    external: true
