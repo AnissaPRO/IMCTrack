@@ -1,0 +1,17 @@
+{
+  "name": "imctrack",
+  "version": "1.0.0",
+  "description": "Ce projet est un proxy de démarrage pour une architecture microservices, servant d'API Gateway.",
+  "main": "index.js",
+  "scripts": {
+    "init": "concurrently \"cd user-service && npm i\" \"cd api_gateway-imc && npm i\"",
+    "script": "concurrently \"cd user-service && docker-compose up\" \"cd api_gateway-imc && docker-compose up\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

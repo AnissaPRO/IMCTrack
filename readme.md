@@ -14,8 +14,8 @@ Ce projet est un proxy de démarrage pour une architecture microservices, servan
 
 ### 2. Cloner le projet
 ```bash
-git clone <url-du-repo>
-cd calories-project
+git clone https://github.com/AnissaPRO/IMCTrack.git
+cd IMCTrack
 
 ### 2. Cloner le projet
 
