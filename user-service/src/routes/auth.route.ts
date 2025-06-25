@@ -1,4 +1,17 @@
-import type { Application, Request, Response, NextFunction } from "express";
+import { Router } from 'express';
+import { signup, login, logout } from '../controllers/auth.controller';
+
+const router = Router();
+
+router.post('/signup', signup);
+router.post('/login', login);
+router.post('/logout', logout);
+
+export default router;
+
+
+
+/*import type { Application, Request, Response, NextFunction } from "express";
 
 import { ROUTES } from './user';
 // A finir
@@ -28,4 +41,4 @@ const generateRoutes = (app: Application) => {
     })
 }
 
-export { generateRoutes };
+export { generateRoutes };*/

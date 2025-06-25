@@ -1,4 +1,22 @@
-interface Route {
+import { Router } from 'express';
+import * as userController from '../controllers/user';
+import * as authController from '../controllers/auth.controller';
+
+const router = Router();
+
+router.get('/', userController.getUsers);
+router.get('/:id', userController.getUser);
+router.post('/', userController.createUser);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
+router.post('/login', authController.login);
+
+export default router;
+
+
+
+
+/*interface Route {
     url: string;
     reqType?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     callback?: (req: any, res: any) => void;
@@ -43,4 +61,4 @@ const ROUTES: Route[] = [
     }
 ];
 
-export { ROUTES, Route };
+export { ROUTES, Route }; */

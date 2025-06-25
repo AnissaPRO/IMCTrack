@@ -1,4 +1,37 @@
-import fs from "fs";
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+}
+export interface NewUser {
+  name?: string;
+  email: string;
+  password: string;
+}
+
+export interface UserUpdate {
+  name?: string;
+  email?: string;
+  password?: string;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*import fs from "fs";
 
 const dataDirectory = "data";
 
@@ -37,4 +70,4 @@ function validateData(data: any, requiredKeys: any) {
   return true;
 }
 
-export { loadData, saveData, validateData };
+export { loadData, saveData, validateData };*/

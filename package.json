@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "init": "concurrently \"cd user-service && npm i\" \"cd api_gateway-imc && npm i\"",
-    "script": "concurrently \"cd user-service && docker-compose up\" \"cd api_gateway-imc && docker-compose up\"",
+    "script": "concurrently \"cd user-service && docker-compose up --build\" \"cd api_gateway-imc && docker-compose up --build\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
