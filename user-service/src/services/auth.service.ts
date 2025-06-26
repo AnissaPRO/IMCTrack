@@ -1,5 +1,6 @@
 import { signToken } from '../utils/jwt';
 import bcrypt from 'bcrypt';
+import * as userService from './user';
 
 interface NewUser {
   name: string;
@@ -11,31 +12,42 @@ interface User extends NewUser {
   id: string;
 }
 
-// Use in-memory store for now
-const users: User[] = [];
+
 
 export const signup = async ({ name, email, password }: Omit<User, 'id'>) => {
+
+  const users = await userService.getAllUsers();
   const existing = users.find((u) => u.email === email);
-  if (existing) return null;
+  if (existing) {
+    throw new Error('User exist');
+  };
 
   const newUser: NewUser = {
     name,
     email,
     password
   };
-  console.log('New user payload:', newUser);
 
-  const token = signToken({ name, email });
-  return { token, user: { name, email } };
+   const createdUser = await userService.createUser(newUser);
+   const token = signToken({ id: createdUser.id, email: createdUser.email });
+   return { token, createdUser };
 };
 
 export const login = async (email: string, password: string) => {
-  const user = users.find((u) => u.email === email);
-  if (!user) return null;
+  
+   const users = await userService.getAllUsers();
+   console.log("tableau",users);
+   const user = users.find((u) => u.email === email);
+   console.log("utilisateur trouvé",user);
+  
+  if (!user) return null; 
 
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) return null;
 
+  // creation JWT
   const token = signToken({ id: user.id, email });
-  return { token, user: { id: user.id, name: user.name, email } };
+
+  console.log('Generated token:', token);
+  return { token };
 };

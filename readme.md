@@ -31,7 +31,7 @@ npm run script
 
 ### 6. Architecture
 
-![Architecture du projet](Architecture.jpg)
+![Architecture du projet](Architecture.png)
 
 
 
