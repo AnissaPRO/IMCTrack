@@ -3,8 +3,8 @@ dotenv.config();
 
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import { setupLogging } from './logging'
-import userRoutes from '../routes/food';
+import { setupLogging } from './logging';
+import foodRoutes from './routes/food';
 
 const app: Express = express();
 const router = app.router;
@@ -26,10 +26,10 @@ app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
 });
 
 app.get('/test', (req: Request, res: Response, next: NextFunction) => {
-  res.send('/test of API of USER Service');
+  res.send('/test of API of Food Service');
 });
 
-router.use('/', userRoutes);
+router.use('/', foodRoutes);
 
 app.listen(8000, '0.0.0.0', () => {
   console.log(`Running on http://0.0.0.0:${port}`);
