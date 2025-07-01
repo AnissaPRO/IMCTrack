@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const RegisterForm = () => {
   const [form, setForm] = useState({ email: '', password: '', name: '' });
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
  const [error, setError] = useState(null);
 const [success, setSuccess] = useState(null);
 const handleChange = async (e) => { 
@@ -34,7 +34,7 @@ const handleChange = async (e) => {
 
     try {
       await registerUser(form);
-      //navigate('/login');
+      navigate('/login');
     } catch (err) {
       setError(err.response?.data?.error || "Erreur lors de l'inscription");
       console.log(err);

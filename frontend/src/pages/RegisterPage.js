@@ -1,7 +1,7 @@
 import { RegisterForm } from '../components/organisms/RegisterForm';
 
-export const RegisterPage = () => {
+const RegisterPage = () => {
   return <RegisterForm />;
 };
 
-export { RegisterForm };
+export { RegisterPage };
