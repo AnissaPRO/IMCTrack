@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '../atoms/Button';
 import { loginUser } from '../../helpers/api';
 import { useNavigate } from 'react-router-dom';
-import jwt from 'jsonwebtoken';
+import { jwtDecode } from "jwt-decode";
 import { Input } from '../atoms/Input'; 
 
 export const LoginForm = () => {
@@ -19,7 +19,7 @@ export const LoginForm = () => {
       const result = await loginUser(form);
       const token = result.data.token;
       localStorage.setItem('token', token);
-     const decoded = jwt.verify(token, "supersecret");
+     const decoded = jwtDecode(token, "supersecret");
      console.log("token décodé", decoded);
       navigate("/profile");
       alert('Connexion réussie');
