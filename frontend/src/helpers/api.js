@@ -15,3 +15,8 @@ export const registerUser = async (data) => {
 export const loginUser = async (data) => {
   return await axiosRequests.post('/user/login', data);
 };
+
+export const CalculFood = async () => {
+  return await axiosRequests.get('/food');
+};
+

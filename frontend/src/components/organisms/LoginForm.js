@@ -21,7 +21,7 @@ export const LoginForm = () => {
       localStorage.setItem('token', token);
      const decoded = jwtDecode(token, "supersecret");
      console.log("token décodé", decoded);
-      navigate("/profile");
+      navigate("/profil");
       alert('Connexion réussie');
     } catch (err) {
       console.error(err);
