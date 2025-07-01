@@ -22,10 +22,7 @@ const ROUTES: Route[] = [
         creditCheck: false,
         proxy: {
             target: "http://user_app:9000",
-            changeOrigin: true,
-            pathRewrite: {
-                 '^/user': '', 
-                },
+            changeOrigin: true
         }
     },
      {
