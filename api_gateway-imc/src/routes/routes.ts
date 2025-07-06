@@ -35,6 +35,15 @@ const ROUTES: Route[] = [
         }
     },
      {
+        url: '/history',
+        auth: false,
+        creditCheck: false,
+        proxy: {
+            target: "http://history_app:3010",
+            changeOrigin: true,
+        }
+    },
+     {
         url: '/sport',
         auth: false,
         creditCheck: false,

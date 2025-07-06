@@ -1,28 +1,28 @@
-
 services:
-  food_app:
+  history_app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: food-track
+    container_name: history-track
     restart: unless-stopped
     networks:
       - mon-network
     depends_on:
-      - food_db
-  food_db:
+      - history_db
+  history_db:
     image: postgres
-    container_name: food_pgdb
+    container_name: history_pgdb
     restart: unless-stopped
     environment:
       POSTGRES_USER: user-name
       POSTGRES_PASSWORD: strong-password
-      POSTGRES_DB: food_db
+      POSTGRES_DB: history_db
     networks:
       - mon-network
     volumes:
       - local_pgdata:/var/lib/postgresql/data
- 
+
+
 volumes:
   local_pgdata:
   pgadmin-data:
