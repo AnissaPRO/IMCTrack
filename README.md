@@ -69,6 +69,7 @@ Track est une application web permettant aux utilisateurs de suivre leur consomm
 
 Pour créer la table users :
 
+```sh
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE users (
@@ -77,9 +78,11 @@ name VARCHAR(100) NOT NULL,
 email VARCHAR(255) UNIQUE NOT NULL,
 password VARCHAR(100) NOT NULL
 );
+```
 
 Pour créer la table food :
 
+```sh
 CREATE TABLE food_items (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 name VARCHAR(100) NOT NULL,
@@ -90,14 +93,18 @@ fat FLOAT DEFAULT 0,
 category VARCHAR(50),
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+```
 
 Pour avoir quelques aliments :
+
+```sh
 INSERT INTO food_items (name, calories_per_100g, protein, carbs, fat, category)
 VALUES
 ('Riz blanc cuit', 120, 2.7, 28, 0.3, 'féculent'),
 ('Pomme', 52, 0.3, 14, 0.2, 'fruit'),
 ('Blanc de poulet', 110, 23, 0, 1.2, 'viande'),
 ('Avocat', 160, 2, 9, 15, 'fruit');
+```
 
 <!-- Accès route -->
 
@@ -112,11 +119,14 @@ VALUES
 
 ## Démarrage des services
 
-- '''sh
+- ```sh
   docker-compose up --build
-  ''' -> pour les services user-service, api_gateway-imc, food-track.
-- '''sh
-  npm start
-  ''' -> pour le service frontend.
+  ```
+
+````-> pour les services user-service, api_gateway-imc, food-track.
+- ```sh
+ npm start
+ ``` -> pour le service frontend.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+````
