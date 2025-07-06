@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Input } from '../atoms/Input';
 import { Button } from '../atoms/Button';
-import { CalculFood } from '../../helpers/api';
+import { CalculFood, saveMeal } from '../../helpers/api';
 
 export const NutritionCalculator = () => {
   const [catalog, setCatalog] = useState([]);
   const [form, setForm] = useState({
     selectedFoodId: '',
-    quantity: ''
+    quantity: '',
   });
-  const [meal, setMeal] = useState([]); // liste des aliments ajoutés
+  const [meal, setMeal] = useState([]);
 
   useEffect(() => {
     const loadFoods = async () => {
@@ -34,56 +34,82 @@ export const NutritionCalculator = () => {
     const quantity = parseFloat(form.quantity);
 
     if (!foodId) {
-      alert("Veuillez sélectionner un aliment.");
+      alert('Veuillez sélectionner un aliment.');
       return;
     }
 
-    const food = catalog.find(f => f.id === foodId);
+    const food = catalog.find((f) => f.id === foodId);
 
     if (!food) {
-      alert("Aliment introuvable.");
+      alert('Aliment introuvable.');
       return;
     }
 
     if (isNaN(quantity) || quantity <= 0) {
-      alert("Quantité invalide.");
+      alert('Quantité invalide.');
       return;
     }
 
     const calc = (value) => (value * quantity) / 100;
 
     const entry = {
-      id: crypto.randomUUID(), 
+      id: crypto.randomUUID(),
       name: food.name,
       quantity,
       calories: calc(food.calories_per_100g),
       protein: calc(food.protein),
       fat: calc(food.fat),
-      carbs: calc(food.carbs)
+      carbs: calc(food.carbs),
     };
 
-    setMeal(prev => [...prev, entry]);
+    setMeal((prev) => [...prev, entry]);
     setForm({ selectedFoodId: '', quantity: '' });
   };
+
   const handleRemoveFood = (idToRemove) => {
-  setMeal(prev => prev.filter(item => item.id !== idToRemove));
-};
+    setMeal((prev) => prev.filter((item) => item.id !== idToRemove));
+  };
 
+  const total = meal.reduce(
+    (acc, item) => ({
+      calories: acc.calories + item.calories,
+      protein: acc.protein + item.protein,
+      fat: acc.fat + item.fat,
+      carbs: acc.carbs + item.carbs,
+    }),
+    { calories: 0, protein: 0, fat: 0, carbs: 0 }
+  );
 
-  const total = meal.reduce((acc, item) => ({
-    calories: acc.calories + item.calories,
-    protein: acc.protein + item.protein,
-    fat: acc.fat + item.fat,
-    carbs: acc.carbs + item.carbs
-  }), { calories: 0, protein: 0, fat: 0, carbs: 0 });
+  const handleSaveDay = async () => {
+    const payload = {
+      total_calories: parseFloat(total.calories.toFixed(2)),
+      total_protein: parseFloat(total.protein.toFixed(2)),
+      total_fat: parseFloat(total.fat.toFixed(2)),
+      total_carbs: parseFloat(total.carbs.toFixed(2)),
+      date: new Date().toISOString().split('T')[0],
+    };
+
+    try {
+      await saveMeal(payload);
+      alert('Journée sauvegardée !');
+      setMeal([]);
+    } catch (error) {
+      console.error('Erreur lors de la requête :', error);
+      alert('Erreur lors de la sauvegarde.');
+    }
+  };
 
   return (
     <div>
       <h2>Calculateur nutritionnel</h2>
       <form onSubmit={handleAddFood}>
-        <select name="selectedFoodId" value={form.selectedFoodId} onChange={handleChange}>
+        <select
+          name="selectedFoodId"
+          value={form.selectedFoodId}
+          onChange={handleChange}
+        >
           <option value="">-- Choisir un aliment --</option>
-          {catalog.map(food => (
+          {catalog.map((food) => (
             <option key={food.id} value={food.id}>
               {food.name} ({food.calories_per_100g} kcal/100g)
             </option>
@@ -106,20 +132,21 @@ export const NutritionCalculator = () => {
         <div style={{ marginTop: '2em' }}>
           <h3>Aliments ajoutés :</h3>
           <ul>
-            {meal.map(item => (
+            {meal.map((item) => (
               <li key={item.id}>
-                {item.quantity}g de {item.name} — 
-                {item.calories.toFixed(1)} kcal, 
-                {item.protein.toFixed(1)}g prot., 
-                {item.fat.toFixed(1)}g lip., 
+                {item.quantity}g de {item.name} — {item.calories.toFixed(1)}{' '}
+                kcal,
+                {item.protein.toFixed(1)}g prot.,
+                {item.fat.toFixed(1)}g lip.,
                 {item.carbs.toFixed(1)}g gluc.
-               <Button onClick={() => handleRemoveFood(item.id)} style={{ marginLeft: '1em' }}>
-                Retirer
-               </Button>
-            </li>
-              
+                <Button
+                  onClick={() => handleRemoveFood(item.id)}
+                  style={{ marginLeft: '1em' }}
+                >
+                  Retirer
+                </Button>
+              </li>
             ))}
-            
           </ul>
 
           <h4>Totaux de la journée :</h4>
@@ -131,6 +158,10 @@ export const NutritionCalculator = () => {
           </ul>
         </div>
       )}
+
+      <Button onClick={handleSaveDay} style={{ marginTop: '1em' }}>
+        Sauvegarder la journée
+      </Button>
     </div>
   );
 };
